@@ -1,5 +1,5 @@
 {
-	"Comment": "On Windows this config should be located at %USERPROFILE%/.omnisharp/omnisharp.json"
+	"Comment": "On Windows this config should be located at %USERPROFILE%/.omnisharp/omnisharp.json",
     "RoslynExtensionsOptions": {
         "EnableAnalyzersSupport": true,
         "LocationPaths": [

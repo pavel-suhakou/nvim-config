@@ -1,3 +1,4 @@
 require("nort.options")
 require("nort.keymaps")
-require("nort.lazy_init")
+require("nort.lazy-init")
+require("nort.helpers")

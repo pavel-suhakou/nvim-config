@@ -17,23 +17,27 @@ return {
                 yaml = { "prettier" },
                 markdown = { "prettier" },
                 graphql = { "prettier" },
-                python = { "isort", "black" },
+                -- python = { "isort", "black" },
             },
         })
 
         local formatandsave = function(args)
-            conform.format({
-                lsp_fallback = true,
-                async = false,
-                timeout_ms = 500,
-                bufnr = args.buf
-            })
-            vim.api.nvim_command('write')
+            if vim.api.nvim_buf_get_name(args.buf) ~= "" then
+                conform.format({
+                    lsp_fallback = true,
+                    async = false,
+                    timeout_ms = 500,
+                    bufnr = args.buf
+                })
+                vim.api.nvim_command('write')
+            end
         end
 
         vim.api.nvim_create_autocmd("InsertLeave", {
             pattern = "*",
-            callback = formatandsave
+            callback = formatandsave,
+            desc = "Run formatter and save",
+
         })
 
         vim.keymap.set({ "n", "v" }, "<leader>f;", formatandsave, { desc = "Format file or range (in visual mode)" })

@@ -30,9 +30,13 @@ return {
             local lspconfig = require("lspconfig")
             lspconfig.emmet_language_server.setup({})
 
-            local capabilities = require("cmp_nvim_lsp").default_capabilities()
-
             local on_attach = function(_, bufnr)
+                require("lsp_signature").on_attach({
+                    max_height = 12,
+                    max_width = 40, -- max_width of signature floating_window, line will be wrapped
+                    -- the value need >= 40
+                }, bufnr)
+
                 local function opts(desc)
                     return { desc = desc, buffer = bufnr, noremap = true, silent = true }
                 end
@@ -61,16 +65,20 @@ return {
                 end, opts("Workspace dirs"))
             end
 
+            local capabilities = require("cmp_nvim_lsp").default_capabilities()
+            local lspoptions = { on_attach = on_attach, capabilities = capabilities }
+
+            lspconfig["tsserver"].setup(lspoptions)
+
+            -- zig tools - zig language server
+            -- see options https://github.com/zigtools/zls
+            lspconfig["zls"].setup(lspoptions)
+
             local on_init = function(client, _)
                 if client.supports_method("textDocument/semanticTokens") then
                     client.server_capabilities.semanticTokensProvider = nil
                 end
             end
-
-            local lspoptions = { on_attach = on_attach, capabilities = capabilities }
-
-            lspconfig["tsserver"].setup(lspoptions)
-
             lspoptions = {
                 cmd = { "lua-language-server", "--stdio" },
                 on_init = on_init,
@@ -81,7 +89,9 @@ return {
                     Lua = {
                         diagnostics = {
                             globals = { "vim" },
+                            disable = { 'missing-fields' }
                         },
+                        telemetry = { enable = false },
                         workspace = {
                             library = {
                                 vim.fn.expand("$VIMRUNTIME/lua"),
@@ -113,5 +123,8 @@ return {
             }
             lspconfig["omnisharp"].setup(lspoptions)
         end,
+        dependencies = {
+            "ray-x/lsp_signature.nvim",
+        }
     },
 }

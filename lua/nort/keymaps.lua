@@ -23,11 +23,3 @@ vim.keymap.set("n", "<leader>Y", '"+Y', { desc = "Copy to system clipboard" })
 -- vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz", { desc = "Jump down in quickfix list" })
 vim.keymap.set("n", "<leader>j", "<cmd>lnext<CR>zz", { desc = "Jump up in loc list" })
 vim.keymap.set("n", "<leader>k", "<cmd>lprev<CR>zz", { desc = "Jump down in loc list" })
-
--- lazygit
-vim.keymap.set("n", "<leader>gg", function()
-    Util.terminal({ "lazygit" }, { cwd = Util.root(), esc_esc = false, ctrl_hjkl = false })
-end, { desc = "Lazygit (root dir)" })
-vim.keymap.set("n", "<leader>gG", function()
-    Util.terminal({ "lazygit" }, { esc_esc = false, ctrl_hjkl = false })
-end, { desc = "Lazygit (cwd)" })
