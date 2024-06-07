@@ -35,25 +35,17 @@ Keys.set('n', '<leader>fw', function()
         local word = vim.fn.expand("<cword>")
         builtin.grep_string({ search = word })
     end,
-    {
-        desc =
-        "Searches for <cword> the string under your cursor or selection in your current working directory (telescope)"
-    })
+    { desc = "Searches for <cword> the string under cursor or selection (telescope)" })
 Keys.set('n', '<leader>fW', function()
         local word = vim.fn.expand("<cWORD>")
         builtin.grep_string({ search = word })
     end,
-    {
-        desc =
-        "Searches for <cWORD> the string under your cursor or selection in your current working directory (telescope)"
-    })
+    { desc = "Searches for <cWORD> the string under cursor or selection(telescope)" })
+Keys.set("n", "<leader>fz", ":Telescope live_grep<CR>", { desc = "Live grep (telescope)" })
 Keys.set('n', '<leader>fs', function()
         builtin.grep_string({ search = vim.fn.input("Grep > ") })
     end,
-    {
-        desc =
-        "Searches for the string under your cursor or selection in your current working directory (telescope)"
-    })
+    { desc = "Searches for the string under cursor or selection (telescope)" })
 
 -- helper keymaps
 Keys.set('n', '<leader>fh', builtin.help_tags, { desc = "Search help tags (telescope)" })
