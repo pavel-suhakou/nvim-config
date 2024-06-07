@@ -1,3 +1,5 @@
+-- See :h (:vert h) cmp.txt
+-- cmp-config cmp-config.view.docs
 return {
     {
         -- shows autocompletion options UI
@@ -9,6 +11,15 @@ return {
             local str = require("cmp.utils.str")
             local types = require("cmp.types")
 
+            local completion_window = cmp.config.window.bordered()
+            -- zindex
+            completion_window.col_offset = 30
+            completion_window.max_width = 25
+            completion_window.max_height = 15
+            local documentation_window = cmp.config.window.bordered()
+            documentation_window.max_width = 45
+            documentation_window.max_height = 40
+
             cmp.setup({
                 snippet = {
                     expand = function(args)
@@ -16,18 +27,17 @@ return {
                     end,
                 },
                 window = {
-                    completion = cmp.config.window.bordered(),
-                    documentation = cmp.config.window.bordered(),
-                    -- completion = {
-                    --     border = border("CmpBorder"),
-                    --     winhighlight = "Normal:CmpPmenu,CursorLine:PmenuSel,Search:None",
-                    -- },
-                    -- documentation = {
-                    --     border = border("CmpDocBorder"),
-                    -- },
+                    completion = completion_window,
+                    documentation = documentation_window,
+                },
+                view = {
+                    docs = {
+                        -- auto_open = false
+                    }
                 },
                 completion = {
-                    completeopt = "menu,menuone,preview",
+                    -- completeopt = "menu,menuone,preview", --remove comment to pre-select first item
+                    -- autocomplete = false
                     -- keyword_length = 2
                 },
                 formatting = {
@@ -37,13 +47,10 @@ return {
                         cmp.ItemField.Menu,
                     },
                     format = lspkind.cmp_format({
-                        mode = "symbol", -- show only symbol annotations
-                        maxwidth = 25,   -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
-                        -- can also be a function to dynamically calculate max width such as
-                        -- maxwidth = function() return math.floor(0.45 * vim.o.columns) end,
-                        ellipsis_char = "...",    -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
+                        mode = "symbol",          -- show only symbol annotations
+                        maxwidth = 25,            -- max character number for completions (can also be a function)
+                        ellipsis_char = "...",    -- append when popup menu exceed maxwidth
                         show_labelDetails = true, -- show labelDetails in menu. Disabled by default
-
                         -- The function below will be called before any actual modifications from lspkind
                         -- so that you can provide more controls on popup customization. (See [#30](https://github.com/onsails/lspkind-nvim/pull/30))
                         before = function(entry, vim_item)
@@ -95,18 +102,29 @@ return {
                             fallback()
                         end
                     end, { "i", "s" }),
-                    ["<C-d>"] = cmp.mapping.scroll_docs(-4),
-                    ["<C-f>"] = cmp.mapping.scroll_docs(4),
+                    ['<C-g>'] = function()
+                        if cmp.visible_docs() then
+                            cmp.close_docs()
+                        else
+                            cmp.open_docs()
+                        end
+                    end,
                     ["<C-e>"] = cmp.mapping.close(),
                     ["<CR>"] = cmp.mapping.confirm({ select = true }),
                 }),
                 sources = cmp.config.sources({
-                    { name = "nvim_lsp" },
-                    { name = "luasnip" },
-                    { name = "async_path" },
-                    { name = "buffer" },
+                    { name = "luasnip", group_index = 1 },
+                    { name = "nvim_lsp", group_index = 2 },
+                    { name = "async_path", group_index = 3 },
+                    { name = "buffer", group_index = 4 },
                 }),
             })
+
+            -- cmp.setup.filetype({ 'markdown', 'help' }, {
+            --     window = {
+            --         documentation = cmp.config.disable
+            --     }
+            -- })
 
             -- `/` cmdline setup.
             cmp.setup.cmdline("/", {
@@ -134,37 +152,42 @@ return {
             cmp.setup.filetype("gitcommit", {
                 sources = cmp.config.sources({
                     { name = "git",        group_index = 1 },
-                    -- { name = "buffer",     group_index = 2 },
                     { name = "async_path", group_index = 2 },
                 }),
             })
 
             cmp.setup.filetype("lua", {
                 sources = {
-                    { name = "nvim_lsp" },
-                    { name = "luasnip" },
-                    { name = "async_path" },
-                    -- { name = "buffer" },
+                    { name = "luasnip",    group_index = 1 },
+                    { name = "nvim_lsp",   group_index = 2 },
+                    { name = "async_path", group_index = 3 },
+                },
+            })
+
+            cmp.setup.filetype("zig", {
+                sources = {
+                    { name = "luasnip",    group_index = 1 },
+                    { name = "nvim_lsp",   group_index = 2 },
+                    { name = "async_path", group_index = 3 },
                 },
             })
 
             cmp.setup.filetype("tex", {
                 sources = {
-                    { name = "vimtex" },
-                    { name = "nvim_lsp" },
-                    { name = "luasnip" },
-                    { name = "async_path" },
+                    { name = "luasnip",    group_index = 1 },
+                    { name = "vimtex",     group_index = 2 },
+                    { name = "nvim_lsp",   group_index = 3 },
+                    { name = "async_path", group_index = 4 },
                     -- { name = "buffer" },
                 },
             })
 
             cmp.setup.filetype("cs", {
                 sources = {
-                    { name = "omnisharp" },
-                    { name = "nvim_lsp" },
-                    { name = "luasnip" },
-                    { name = "async_path" },
-                    -- { name = "buffer" },
+                    { name = "luasnip",    group_index = 1 },
+                    { name = "omnisharp",  group_index = 2 },
+                    -- { name = "nvim_lsp" },
+                    { name = "async_path", group_index = 3 },
                 },
             })
         end,

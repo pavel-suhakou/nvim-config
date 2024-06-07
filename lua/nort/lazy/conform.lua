@@ -22,6 +22,8 @@ return {
         })
 
         local formatandsave = function(args)
+            -- local bufname = vim.api.nvim_buf_get_name(args.buf)
+            -- print(bufname)
             if vim.api.nvim_buf_get_name(args.buf) ~= "" then
                 conform.format({
                     lsp_fallback = true,
@@ -40,6 +42,7 @@ return {
 
         })
 
-        vim.keymap.set({ "n", "v" }, "<leader>f;", formatandsave, { desc = "Format file or range (in visual mode)" })
+        vim.keymap.set({ "n", "v" }, "<leader>f;", formatandsave,
+            { desc = "Format file or range (in visual mode) and save" })
     end,
 }

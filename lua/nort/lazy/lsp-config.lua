@@ -37,32 +37,7 @@ return {
                     -- the value need >= 40
                 }, bufnr)
 
-                local function opts(desc)
-                    return { desc = desc, buffer = bufnr, noremap = true, silent = true }
-                end
-                vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts("Gt decl"))
-                vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts("Gt def"))
-                vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts("Gt impl"))
-                vim.keymap.set("n", "<space>D", vim.lsp.buf.type_definition, opts("Gt type def"))
-                vim.keymap.set("n", "<leader>sh", vim.lsp.buf.signature_help, opts("Show signature help"))
-
-                vim.keymap.set("n", "K", vim.lsp.buf.hover, opts("Hover"))
-                vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts("Sig help"))
-
-                vim.keymap.set({ "n", "v" }, "<space>.", vim.lsp.buf.code_action, opts("Show code actions"))
-                vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, opts("Rename"))
-                vim.keymap.set("n", "gr", vim.lsp.buf.references, opts("Refs"))
-
-                vim.keymap.set("n", "<space>ee", vim.diagnostic.open_float, opts("See diags"))
-                vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts("Prev diag"))
-                vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts("Next diag"))
-                vim.keymap.set("n", "<space>q", vim.diagnostic.setloclist, opts("Diags->loc list"))
-
-                vim.keymap.set("n", "<space>wa", vim.lsp.buf.add_workspace_folder, opts("Workspace add"))
-                vim.keymap.set("n", "<space>wr", vim.lsp.buf.remove_workspace_folder, opts("Workspace remove"))
-                vim.keymap.set("n", "<space>wl", function()
-                    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-                end, opts("Workspace dirs"))
+                Lsp_keymaps(bufnr)
             end
 
             local capabilities = require("cmp_nvim_lsp").default_capabilities()

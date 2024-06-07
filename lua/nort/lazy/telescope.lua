@@ -9,30 +9,6 @@ return {
         config = function()
             require('telescope').setup({})
 
-            local builtin = require('telescope.builtin')
-            vim.keymap.set('n', '<leader>fj', builtin.find_files,
-                { desc = "Lists files in your current working directory, respects .gitignore" })
-            vim.keymap.set('n', '<leader>gf', builtin.git_files,
-                { desc = "Fuzzy search through the output of git ls-files command, respects .gitignore" })
-            vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = "Buffers" })
-            vim.keymap.set('n', '<leader>fw', function()
-                    local word = vim.fn.expand("<cword>")
-                    builtin.grep_string({ search = word })
-                end,
-                { desc =
-                "Searches for <cword> the string under your cursor or selection in your current working directory" })
-            vim.keymap.set('n', '<leader>fW', function()
-                    local word = vim.fn.expand("<cWORD>")
-                    builtin.grep_string({ search = word })
-                end,
-                { desc =
-                "Searches for <cWORD> the string under your cursor or selection in your current working directory" })
-            vim.keymap.set('n', '<leader>fs', function()
-                    builtin.grep_string({ search = vim.fn.input("Grep > ") })
-                end,
-                { desc = "Searches for the string under your cursor or selection in your current working directory" })
-            vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = "Search help tags" })
-            vim.keymap.set('n', '<leader>fk', builtin.keymaps, { desc = "Search keymaps" })
         end
     },
     {

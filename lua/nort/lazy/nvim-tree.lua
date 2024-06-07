@@ -76,22 +76,6 @@ return {
             -- 	},
             -- },
         })
-
-        local api = require("nvim-tree.api")
-
-        local function opts(desc)
-            return {
-                desc = "nvim-tree: " .. desc,
-                -- buffer = bufnr,
-                noremap = true,
-                silent = true,
-                nowait = true,
-            }
-        end
-
-        vim.keymap.set("n", "<leader>eh", api.tree.toggle_help, opts("help"))
-        vim.keymap.set("n", "<leader>eo", api.tree.open, opts("open"))
-        vim.keymap.set("n", "<leader>ek", api.tree.close, opts("kill"))
     end,
     dependencies = {
         "nvim-tree/nvim-web-devicons",
