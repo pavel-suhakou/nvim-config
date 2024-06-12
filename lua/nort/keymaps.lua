@@ -61,6 +61,10 @@ function Lsp_keymaps(bufnr)
     Keys.set("n", "gr", "<cmd>Telescope lsp_references<CR>", opts("LSP references (telescope)"))
     Keys.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts("LSP definitions (telescope)"))
     Keys.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts("Go to implementation (telescope)"))
+
+
+    Keys.set("n", "<leader>ds", builtin.lsp_document_symbols, opts("Document symbols"))
+    Keys.set("n", "<leader>ws", builtin.lsp_dynamic_workspace_symbols, opts("Workspace symbols"))
     -- Keys.set("n", "<leader>D", "<cmd>Telescope lsp_type_definitions<CR>", opts("Go to type definitions (telescope)"))
     Keys.set("n", "<leader>sh", vim.lsp.buf.signature_help, opts("Show signature help"))
 
@@ -107,3 +111,22 @@ Keys.set("n", "<leader>ek", ntree_api.tree.close, opts("kill"))
 
 Keys.set({ "n", "v" }, '<leader>m', require('nvim-emmet').wrap_with_abbreviation,
     { desc = "Expand html with Emmet" })
+
+-- Close quickfix window with q
+-- see https://www.reddit.com/r/neovim/comments/1datzv6/comment/l7msz9k/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = {
+        "checkhealth",
+        "fugitive*",
+        "git",
+        "help",
+        "lspinfo",
+        "netrw",
+        "notify",
+        "qf",
+        "query",
+    },
+    callback = function()
+        vim.keymap.set("n", "q", vim.cmd.close, { desc = "Close the current buffer", buffer = true })
+    end,
+})

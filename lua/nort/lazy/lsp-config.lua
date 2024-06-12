@@ -33,8 +33,13 @@ return {
             local on_attach = function(_, bufnr)
                 require("lsp_signature").on_attach({
                     max_height = 12,
-                    max_width = 40, -- max_width of signature floating_window, line will be wrapped
+                    max_width = 60, -- max_width of signature floating_window, line will be wrapped
                     -- the value need >= 40
+                    -- floating_window_above_cur_line = false,
+                    -- hint_enable = false,
+                    -- zindex = 0,
+                    -- transparency = 90,
+                    -- toggle_key = "<C-h>"
                 }, bufnr)
 
                 Lsp_keymaps(bufnr)

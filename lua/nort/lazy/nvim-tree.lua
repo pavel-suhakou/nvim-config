@@ -42,6 +42,11 @@ return {
                 local api = require("nvim-tree.api")
                 -- default keymaps
                 api.config.mappings.default_on_attach(bufnr)
+
+                local function opts(desc)
+                    return { desc = 'nvim-tree: ' .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+                end
+                vim.keymap.set('n', '<C-q>', api.node.open.vertical, opts("open vertical split"))
             end,
             -- icons = {
             -- 	show = {
