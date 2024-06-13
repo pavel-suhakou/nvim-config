@@ -27,7 +27,7 @@ vim.opt.incsearch = true
 
 vim.opt.termguicolors = true
 
-vim.opt.scrolloff = 8
+vim.opt.scrolloff = 10
 vim.opt.signcolumn = "yes"
 vim.opt.isfname:append("@-@")
 
@@ -43,6 +43,7 @@ g["loaded_ruby_provider"] = 0
 
 o.pumheight = 12
 o.wildignorecase = true
+vim.opt.ignorecase = true
 
 -- gray
 vim.api.nvim_set_hl(0, 'CmpItemAbbrDeprecated', { bg = 'NONE', strikethrough = true, fg = '#808080' })
