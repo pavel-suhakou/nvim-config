@@ -4,6 +4,7 @@ return {
     {
         -- shows autocompletion options UI
         "hrsh7th/nvim-cmp",
+        event = "InsertEnter",
         config = function()
             -- Set up nvim-cmp.
             local cmp = require("cmp")
@@ -120,12 +121,6 @@ return {
                 }),
             })
 
-            -- cmp.setup.filetype({ 'markdown', 'help' }, {
-            --     window = {
-            --         documentation = cmp.config.disable
-            --     }
-            -- })
-
             -- `/` cmdline setup.
             cmp.setup.cmdline("/", {
                 mapping = cmp.mapping.preset.cmdline(),
@@ -191,10 +186,7 @@ return {
             })
         end,
         dependencies = {
-            "neovim/nvim-lspconfig",
-            "williamboman/mason.nvim",
-            "williamboman/mason-lspconfig.nvim",
-            "onsails/lspkind.nvim",
+            "onsails/lspkind.nvim", -- adds vscode-like pictograms to neovim built-in lsp
 
             "hrsh7th/cmp-nvim-lsp",
             { "hrsh7th/cmp-nvim-lua", ft = "lua" },

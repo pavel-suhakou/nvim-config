@@ -26,6 +26,7 @@ return {
     },
     {
         "neovim/nvim-lspconfig",
+        event = "User FilePost",
         config = function()
             local lspconfig = require("lspconfig")
             lspconfig.emmet_language_server.setup({})

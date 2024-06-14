@@ -1,6 +1,7 @@
 return {
     {
         "nvim-treesitter/nvim-treesitter",
+        event = { "BufReadPost", "BufNewFile" },
         build = ":TSUpdate",
         config = function()
             --        if (vim.loop.os_uname().sysname == "Windows_NT") then
@@ -71,6 +72,7 @@ return {
     },
     {
         "nvim-treesitter/nvim-treesitter-textobjects",
+        event = { "BufReadPost", "BufNewFile" },
         config = function()
             require 'nvim-treesitter.configs'.setup {
                 textobjects = {
@@ -91,7 +93,7 @@ return {
                         -- You can choose the select mode (default is charwise 'v')
                         selection_modes = {
                             ['@parameter.outer'] = 'v', -- charwise
-                            ['@function.outer'] = 'V', -- linewise
+                            ['@function.outer'] = 'V',  -- linewise
                             ['@class.outer'] = '<c-v>', -- blockwise
                         },
                         -- If you set this to `true` (default is `false`) then any textobject is

@@ -1,5 +1,6 @@
 return {
     "nvim-tree/nvim-tree.lua",
+    keys = "<leader>eo",
     config = function()
         require("nvim-tree").setup({
             filters = {

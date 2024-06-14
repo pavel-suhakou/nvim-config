@@ -1,6 +1,7 @@
 return {
     {
         "folke/tokyonight.nvim",
+        lazy = true,
         config = function()
             require("tokyonight").setup({
                 --`storm`, `moon`, a darker variant `night` and `day`
@@ -20,6 +21,7 @@ return {
     {
         "rose-pine/neovim",
         name = "rose-pine",
+        lazy = true,
         config = function()
             require("rose-pine").setup({
                 variant = "moon",
