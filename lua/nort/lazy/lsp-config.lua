@@ -1,6 +1,7 @@
 return {
     {
         "williamboman/mason.nvim",
+        event = "BufEnter",
         ui = {
             icons = {
                 package_pending = " ",
@@ -18,6 +19,7 @@ return {
     },
     {
         "williamboman/mason-lspconfig.nvim",
+        event = "BufEnter",
         config = function()
             require("mason-lspconfig").setup({
                 ensure_installed = { "lua_ls", "tsserver", "omnisharp" },

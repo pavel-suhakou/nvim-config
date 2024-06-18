@@ -22,16 +22,16 @@ return {
         })
 
         local formatandsave = function(args)
-            -- local bufname = vim.api.nvim_buf_get_name(args.buf)
+            local bufname = vim.api.nvim_buf_get_name(args.buf)
             -- print(bufname)
-            if vim.api.nvim_buf_get_name(args.buf) ~= "" then
+            if bufname ~= "" and bufname:find("^[CDcd]:[\\/].+") ~= nil then
                 conform.format({
                     lsp_fallback = true,
                     async = false,
                     timeout_ms = 500,
                     bufnr = args.buf
                 })
-                vim.api.nvim_command('write')
+                --vim.api.nvim_command('write')
             end
         end
 
