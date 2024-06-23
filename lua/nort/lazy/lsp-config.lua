@@ -1,7 +1,9 @@
+Workspace = vim.loop.cwd()
+
 return {
     {
         "williamboman/mason.nvim",
-        event = "BufEnter",
+        event = "VeryLazy",
         ui = {
             icons = {
                 package_pending = " ",
@@ -19,7 +21,7 @@ return {
     },
     {
         "williamboman/mason-lspconfig.nvim",
-        event = "BufEnter",
+        event = "VeryLazy",
         config = function()
             require("mason-lspconfig").setup({
                 ensure_installed = { "lua_ls", "tsserver", "omnisharp" },
@@ -28,7 +30,7 @@ return {
     },
     {
         "neovim/nvim-lspconfig",
-        event = "User FilePost",
+        event = "VeryLazy",
         config = function()
             local lspconfig = require("lspconfig")
             lspconfig.emmet_language_server.setup({})
@@ -46,6 +48,21 @@ return {
                 }, bufnr)
 
                 Lsp_keymaps(bufnr)
+            end
+
+            local on_omnisharp_attach = function(_, bufnr)
+                require("lsp_signature").on_attach({
+                    max_height = 12,
+                    max_width = 60, -- max_width of signature floating_window, line will be wrapped
+                    -- the value need >= 40
+                    -- floating_window_above_cur_line = false,
+                    -- hint_enable = false,
+                    -- zindex = 0,
+                    -- transparency = 90,
+                    -- toggle_key = "<C-h>"
+                }, bufnr)
+
+                Omnisharp_lsp_keymaps(bufnr)
             end
 
             local capabilities = require("cmp_nvim_lsp").default_capabilities()
@@ -89,25 +106,82 @@ return {
             }
             lspconfig["lua_ls"].setup(lspoptions)
 
+            -- https://github.com/OmniSharp/omnisharp-roslyn/wiki/Configuration-Options
+
+            local git_dir
+            for dir in vim.fs.parents(vim.api.nvim_buf_get_name(0)) do
+                if vim.fn.isdirectory(dir .. "/.git") == 1 then
+                    git_dir = dir
+                    break
+                end
+            end
+            if git_dir then
+                print("Found git repository at ", git_dir)
+            end
+            local current_dir = git_dir or vim.fn.getcwd()
+
             lspoptions = {
-                cmd = { "omnisharp" }, -- "omnisharp-mono"
-                on_attach = on_attach,
+                filetypes = { "cs", "vb", "sln" },
+                root_dir = function(fname)
+                    return current_dir
+                end,
+                on_attach = on_omnisharp_attach,
                 capabilities = capabilities,
-                enable_import_completion = true,
-                organize_imports_on_format = true,
-                enable_roslyn_analyzers = true,
                 settings = {
                     RoslynExtensionsOptions = {
                         EnableAnalyzersSupport = false,
-                        -- AnalyzeOpenDocumentsOnly = nil,
                         EnableImportCompletion = true,
+                    },
+                    FormattingOptions = {
+                        -- Enables support for reading code style, naming convention and analyzer
+                        -- settings from .editorconfig.
+                        EnableEditorConfigSupport = true,
+                        -- Specifies whether 'using' directives should be grouped and sorted during
+                        -- document formatting.
+                        -- OrganizeImports = nil,
                     },
                 },
             }
-            lspconfig["omnisharp"].setup(lspoptions)
+
+            local is_mono_sln = os.getenv("is_mono_sln")
+            if (is_mono_sln ~= nil and is_mono_sln ~= "") then
+                lspoptions.cmd = { "omnisharp-mono" }
+            else
+                local omnisharp_bin = "";
+                if (vim.loop.os_uname().sysname == "Windows_NT") then
+                    omnisharp_bin =
+                    "C:\\Users\\Admin\\AppData\\Local\\nvim-data\\mason\\packages\\omnisharp\\libexec\\OmniSharp.dll";
+                end
+
+                lspoptions.cmd = { "dotnet", omnisharp_bin } -- .. " -s " .. Workspace }, -- "omnisharp-mono"
+            end
+
+            local csharp_sln = os.getenv("csharp_sln")
+            if (csharp_sln ~= nil and csharp_sln ~= "") then
+                lspoptions.init_options = {
+                    "-s " .. csharp_sln
+                }
+
+                lspoptions.MsBuild = {
+                    csharp_sln,
+                    -- TargetFrameworkRootPath = "C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319",
+                    -- ToolsVersion = "12.0",
+                    -- MSBuildSDKsPath = "",
+                }
+            end
+
+            -- lspconfig["omnisharp"].setup(lspoptions)
         end,
         dependencies = {
             "ray-x/lsp_signature.nvim",
+            "Hoffs/omnisharp-extended-lsp.nvim"
         }
+    },
+    {
+        "dgagn/diagflow.nvim",
+        event = "LspAttach",
+        config = function()
+            require("diagflow").setup()
+        end
     },
 }

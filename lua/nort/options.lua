@@ -2,6 +2,8 @@ local opt = vim.opt
 local o = vim.o
 local g = vim.g
 
+Is_windows = vim.loop.os_uname().sysname == "Windows_NT"
+
 --vim.opt.guicursor = "block"
 
 vim.opt.nu = true

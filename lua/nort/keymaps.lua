@@ -26,9 +26,18 @@ local builtin = require('telescope.builtin')
 Keys.set('n', '<leader>fj', builtin.find_files,
     { desc = "Lists files in your current working directory, respects .gitignore (telescope)" })
 -- same as find_files ?
--- Keys.set('n', '<leader>jf', builtin.git_files,
---     { desc = "Fuzzy search through the output of git ls-files command, respects .gitignore" })
+Keys.set('n', '<leader>jf', builtin.git_files,
+    { desc = "Fuzzy search through the output of git ls-files command, respects .gitignore" })
 Keys.set('n', '<leader>fb', builtin.buffers, { desc = "Buffers (telescope)" })
+
+-- git keymaps
+Keys.set('n', '<leader>gc', builtin.git_commits, { desc = "Git commits (telescope)" })
+Keys.set('n', '<leader>gh', builtin.git_bcommits, { desc = "Git buffer commits (telescope)" })
+Keys.set('v', '<leader>gr', builtin.git_bcommits_range,
+    { desc = "Git buffer commits in a range of lines (visual mode) (telescope)" })
+Keys.set('n', '<leader>gb', builtin.git_branches, { desc = "Git branches (telescope)" })
+Keys.set('n', '<leader>gs', builtin.git_status, { desc = "Git status (telescope)" })
+Keys.set('n', '<leader>gt', builtin.git_stash, { desc = "Git stashes (telescope)" })
 
 -- grep keymaps
 Keys.set('n', '<leader>fw', function()
@@ -61,11 +70,53 @@ function Lsp_keymaps(bufnr)
     Keys.set("n", "gr", "<cmd>Telescope lsp_references<CR>", opts("LSP references (telescope)"))
     Keys.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts("LSP definitions (telescope)"))
     Keys.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts("Go to implementation (telescope)"))
+    Keys.set("n", "<leader>td", "<cmd>Telescope lsp_type_definitions<CR>", opts("Go to type definitions (telescope)"))
+
+    Keys.set("n", "<leader>sd", builtin.lsp_document_symbols, opts("Document symbols"))
+    Keys.set("n", "<leader>sw", builtin.lsp_dynamic_workspace_symbols, opts("Workspace symbols"))
+    Keys.set("n", "<leader>sh", vim.lsp.buf.signature_help, opts("Show signature help"))
+
+    Keys.set("n", "K", vim.lsp.buf.hover, opts("Hover"))
+    Keys.set("n", "<C-k>", vim.lsp.buf.signature_help, opts("Sig help"))
+
+    Keys.set({ "n", "v" }, "<leader>.", vim.lsp.buf.code_action, opts("Show code actions"))
+    Keys.set("n", "<leader>rn", vim.lsp.buf.rename, opts("Rename (LSP)"))
+
+    -- Keys.set("n", "<leader>ee", vim.diagnostic.open_float, opts("See diags"))
+    Keys.set("n", "<leader>D", "<cmd>Telescope diagnostics<CR>", opts("Show diagnostics (telescope)"))
+    Keys.set("n", "<leader>d", "<cmd>Telescope diagnostics bufnr=0<CR>", opts("Show diagnostics (telescope)"))
+    -- Keys.set("n", "<leader>d", vim.diagnostic.open_float, opts("Show line diagnostics"))
+    Keys.set("n", "[d", vim.diagnostic.goto_prev, opts("Go to previous diagnostic"))
+    Keys.set("n", "]d", vim.diagnostic.goto_next, opts("Go to next diagnostic"))
+    Keys.set("n", "<leader>q", vim.diagnostic.setloclist, opts("Diags->loc list"))
+
+    Keys.set("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, opts("Workspace add"))
+    Keys.set("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, opts("Workspace remove"))
+    Keys.set("n", "<leader>wl", function()
+        print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+    end, opts("Workspace dirs"))
+
+    --- also see keymaps in completions.lua
+end
+
+function Omnisharp_lsp_keymaps(bufnr)
+    local function opts(desc)
+        return { desc = desc, buffer = bufnr, noremap = true, silent = true }
+    end
+
+    Keys.set("n", "gD", vim.lsp.buf.declaration, opts("Gt decl"))
+    Keys.set("n", "gr", "<cmd>lua require('omnisharp_extended').telescope_lsp_references()<CR>",
+        opts("LSP references (telescope)"))
+    Keys.set("n", "gd", "<cmd>lua require('omnisharp_extended').telescope_lsp_definition({ jump_type = \"vsplit\" })<CR>",
+        opts("LSP definitions (telescope)"))
+    Keys.set("n", "gi", "<cmd>lua require('omnisharp_extended').telescope_lsp_implementation()<cr>",
+        opts("Go to implementation (telescope)"))
+    Keys.set("n", "<leader>td", "<cmd>lua require('omnisharp_extended').telescope_lsp_type_definition()<cr>",
+        opts("Go to type definitions (telescope)"))
 
 
-    Keys.set("n", "<leader>ds", builtin.lsp_document_symbols, opts("Document symbols"))
-    Keys.set("n", "<leader>ws", builtin.lsp_dynamic_workspace_symbols, opts("Workspace symbols"))
-    -- Keys.set("n", "<leader>D", "<cmd>Telescope lsp_type_definitions<CR>", opts("Go to type definitions (telescope)"))
+    Keys.set("n", "<leader>sd", builtin.lsp_document_symbols, opts("Document symbols"))
+    Keys.set("n", "<leader>sw", builtin.lsp_dynamic_workspace_symbols, opts("Workspace symbols"))
     Keys.set("n", "<leader>sh", vim.lsp.buf.signature_help, opts("Show signature help"))
 
     Keys.set("n", "K", vim.lsp.buf.hover, opts("Hover"))

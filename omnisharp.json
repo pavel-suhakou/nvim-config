@@ -8,7 +8,7 @@
             "c:/Users/Admin/.vscode/extensions/josefpihrt-vscode.roslynator-4.12.4/roslyn/refactorings",
             "c:/Users/Admin/.vscode/extensions/josefpihrt-vscode.roslynator-4.12.4/roslyn/fixes"
         ]
-    }
+    },
 	"FormattingOptions": {
 		"EnableEditorConfigSupport": true,
 		"OrganizeImports": false,
