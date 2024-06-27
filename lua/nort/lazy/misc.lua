@@ -14,6 +14,7 @@ return {
     },
     {
         "RRethy/vim-illuminate",
+        event = "BufEnter",
         config = function()
             -- change the highlight style to be lighter
             local set_hl_style = function()

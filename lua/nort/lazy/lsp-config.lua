@@ -108,23 +108,23 @@ return {
 
             -- https://github.com/OmniSharp/omnisharp-roslyn/wiki/Configuration-Options
 
-            local git_dir
-            for dir in vim.fs.parents(vim.api.nvim_buf_get_name(0)) do
-                if vim.fn.isdirectory(dir .. "/.git") == 1 then
-                    git_dir = dir
-                    break
-                end
-            end
-            if git_dir then
-                print("Found git repository at ", git_dir)
-            end
-            local current_dir = git_dir or vim.fn.getcwd()
+            -- local git_dir
+            -- for dir in vim.fs.parents(vim.api.nvim_buf_get_name(0)) do
+            --     if vim.fn.isdirectory(dir .. "/.git") == 1 then
+            --         git_dir = dir
+            --         break
+            --     end
+            -- end
+            -- if git_dir then
+            --     print("Found git repository at ", git_dir)
+            -- end
+            -- local current_dir = git_dir or vim.fn.getcwd()
 
             lspoptions = {
                 filetypes = { "cs", "vb", "sln" },
-                root_dir = function(fname)
-                    return current_dir
-                end,
+                -- root_dir = function(fname)
+                --     return current_dir
+                -- end,
                 on_attach = on_omnisharp_attach,
                 capabilities = capabilities,
                 settings = {
