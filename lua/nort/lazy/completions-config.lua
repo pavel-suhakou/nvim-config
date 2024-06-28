@@ -14,12 +14,12 @@ return {
 
             local completion_window = cmp.config.window.bordered()
             -- zindex
-            completion_window.col_offset = 30
-            completion_window.max_width = 25
+            completion_window.col_offset = 5
+            completion_window.max_width = 30
             completion_window.max_height = 15
-            local documentation_window = cmp.config.window.bordered()
-            documentation_window.max_width = 45
-            documentation_window.max_height = 40
+            -- local documentation_window = cmp.config.window.bordered()
+            -- documentation_window.max_width = 45
+            -- documentation_window.max_height = 40
 
             cmp.setup({
                 snippet = {
@@ -29,7 +29,7 @@ return {
                 },
                 window = {
                     completion = completion_window,
-                    documentation = documentation_window,
+                    documentation = nil,
                 },
                 view = {
                     docs = {
