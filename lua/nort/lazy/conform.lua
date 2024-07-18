@@ -10,7 +10,7 @@ return {
                 typescript = { "prettier" },
                 javascriptreact = { "prettier" },
                 typescriptreact = { "prettier" },
-                svelte = { "prettier" },
+                -- svelte = { "prettier" },
                 css = { "prettier" },
                 html = { "prettier" },
                 json = { "prettier" },
@@ -22,15 +22,17 @@ return {
         })
 
         local formatandsave = function(args)
+            if (args == nil or args.buf == nil) then return end;
             local bufname = vim.api.nvim_buf_get_name(args.buf)
             -- print(bufname)
             if bufname ~= "" and bufname:find("^[CDcd]:[\\/].+") ~= nil then
-                conform.format({
+                local status, err = pcall(conform.format({
                     lsp_fallback = true,
                     async = false,
-                    timeout_ms = 500,
+                    timeout_ms = 1000,
                     bufnr = args.buf
-                })
+                }))
+                -- if (not status) then print(err.code) end
                 --vim.api.nvim_command('write')
             end
         end

@@ -51,16 +51,16 @@ return {
             end
 
             local on_omnisharp_attach = function(_, bufnr)
-                require("lsp_signature").on_attach({
-                    max_height = 12,
-                    max_width = 60, -- max_width of signature floating_window, line will be wrapped
-                    -- the value need >= 40
-                    -- floating_window_above_cur_line = false,
-                    -- hint_enable = false,
-                    -- zindex = 0,
-                    -- transparency = 90,
-                    -- toggle_key = "<C-h>"
-                }, bufnr)
+                -- require("lsp_signature").on_attach({
+                --     max_height = 12,
+                --     max_width = 60, -- max_width of signature floating_window, line will be wrapped
+                --     -- the value need >= 40
+                --     -- floating_window_above_cur_line = false,
+                --     -- hint_enable = false,
+                --     -- zindex = 0,
+                --     -- transparency = 90,
+                --     -- toggle_key = "<C-h>"
+                -- }, bufnr)
 
                 Omnisharp_lsp_keymaps(bufnr)
             end
@@ -69,6 +69,7 @@ return {
             local lspoptions = { on_attach = on_attach, capabilities = capabilities }
 
             lspconfig["tsserver"].setup(lspoptions)
+            lspconfig["svelte"].setup(lspoptions)
 
             -- zig tools - zig language server
             -- see options https://github.com/zigtools/zls
@@ -173,7 +174,30 @@ return {
             -- lspconfig["omnisharp"].setup(lspoptions)
         end,
         dependencies = {
-            "ray-x/lsp_signature.nvim",
+            {
+                "ray-x/lsp_signature.nvim",
+                config = function()
+                    local sign = require("lsp_signature")
+                    sign.setup({
+                        zindex = 40,
+                        doc_lines = 0,
+                        floating_window = false,
+                        max_height = 2,
+                        hint_prefix = "🐼", -- Panda for parameter, NOTE: for the terminal not support emoji, might crash
+                        -- or, provide a table with 3 icons
+                        -- hint_prefix = {
+                        --     above = "↙ ",  -- when the hint is on the line above the current line
+                        --     current = "← ",  -- when the hint is on the same line
+                        --     below = "↖ "  -- when the hint is on the line below the current line
+                        -- }
+                        hint_inline = function() return 'eol' end, -- should the hint be inline(nvim 0.10 only)?  default false
+                        -- return true | 'inline' to show hint inline, return 'eol' to show hint at end of line, return false to disable
+                        -- return 'right_align' to display hint right aligned in the current line
+                        toggle_key = "<C-k>",
+                        select_signature_key = "<C-n>"
+                    })
+                end
+            },
             "Hoffs/omnisharp-extended-lsp.nvim"
         }
     },

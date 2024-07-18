@@ -200,16 +200,27 @@ return {
                 -- provides snippets to nvim-cmp to render UI
                 "L3MON4D3/LuaSnip",
                 config = function()
+                    local luasnip = require("luasnip")
+
                     vim.api.nvim_create_autocmd("InsertLeave", {
                         callback = function()
                             if
-                                require("luasnip").session.current_nodes[vim.api.nvim_get_current_buf()]
-                                and not require("luasnip").session.jump_active
+                                luasnip.session.current_nodes[vim.api.nvim_get_current_buf()]
+                                and not luasnip.session.jump_active
                             then
-                                require("luasnip").unlink_current()
+                                luasnip.unlink_current()
                             end
                         end,
                     })
+
+                    require("luasnip.loaders.from_vscode").lazy_load()
+
+                    vim.keymap.set({ "i", "s" }, "<C-L>", function()
+                        luasnip.jump(1)
+                    end, { silent = true })
+                    vim.keymap.set({ "i", "s" }, "<C-J>", function()
+                        luasnip.jump(-1)
+                    end, { silent = true })
                 end,
                 dependencies = {
                     {
@@ -225,6 +236,8 @@ return {
                             "rafamadriz/friendly-snippets",
                         },
                     },
+                    -- vs code snippets collection
+                    { "rafamadriz/friendly-snippets" }
                 },
             },
         },

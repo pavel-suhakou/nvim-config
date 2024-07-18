@@ -119,7 +119,9 @@ function Omnisharp_lsp_keymaps(bufnr)
     Keys.set("n", "<leader>sw", builtin.lsp_dynamic_workspace_symbols, opts("Workspace symbols"))
 
     Keys.set("n", "K", vim.lsp.buf.hover, opts("Hover"))
-    Keys.set("n", "<C-k>", vim.lsp.buf.signature_help, opts("Sig help"))
+    Keys.set({ "n", "i" }, "<C-k>", function()
+        require('lsp_signature').toggle_float_win()
+    end, opts("Sig help"))
     Keys.set("n", "<leader>sh", vim.lsp.buf.signature_help, opts("Show signature help"))
 
     Keys.set({ "n", "v" }, "<leader>.", vim.lsp.buf.code_action, opts("Show code actions"))
