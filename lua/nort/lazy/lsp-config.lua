@@ -190,7 +190,7 @@ return {
                         --     current = "← ",  -- when the hint is on the same line
                         --     below = "↖ "  -- when the hint is on the line below the current line
                         -- }
-                        hint_inline = function() return 'eol' end, -- should the hint be inline(nvim 0.10 only)?  default false
+                        -- hint_inline = function() return 'eol' end, -- should the hint be inline(nvim 0.10 only)?  default false
                         -- return true | 'inline' to show hint inline, return 'eol' to show hint at end of line, return false to disable
                         -- return 'right_align' to display hint right aligned in the current line
                         toggle_key = "<C-k>",
